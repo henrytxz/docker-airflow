@@ -85,7 +85,8 @@ RUN set -ex \
         /tmp/* \
         /var/tmp/*
 
-RUN apt-get install wget \
+RUN apt-get update \
+&& apt-get install wget \
 && wget https://download.java.net/openjdk/jdk7u75/ri/openjdk-7u75-b13-linux-x64-18_dec_2014.tar.gz \
 && mkdir -p $JAVA_HOME \
 && tar xvf openjdk-7u75-b13-linux-x64-18_dec_2014.tar.gz \
