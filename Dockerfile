@@ -59,7 +59,6 @@ RUN set -ex \
         rsync \
         netcat \
         locales \
-        openjdk-7-jdk \
     && sed -i 's/^# en_US.UTF-8 UTF-8$/en_US.UTF-8 UTF-8/g' /etc/locale.gen \
     && locale-gen \
     && update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
@@ -68,7 +67,6 @@ RUN set -ex \
     && chown -R airflow: ${HADOOP_DIR} \
     && mkdir ${HIVE_DIR} \
     && chown -R airflow: ${HIVE_DIR} \
-    && pip install -U pip setuptools wheel \
     && pip install pytz \
     && pip install pyOpenSSL \
     && pip install ndg-httpsclient \
@@ -85,10 +83,7 @@ RUN set -ex \
     && rm -rf \
         /var/lib/apt/lists/* \
         /tmp/* \
-        /var/tmp/* \
-        /usr/share/man \
-        /usr/share/doc \
-        /usr/share/doc-base
+        /var/tmp/*
 
 RUN apt-get install wget \
 && wget https://download.java.net/openjdk/jdk7u75/ri/openjdk-7u75-b13-linux-x64-18_dec_2014.tar.gz \
