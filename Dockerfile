@@ -90,6 +90,14 @@ RUN set -ex \
         /usr/share/doc \
         /usr/share/doc-base
 
+RUN apt-get install wget \
+&& wget https://download.java.net/openjdk/jdk7u75/ri/openjdk-7u75-b13-linux-x64-18_dec_2014.tar.gz \
+&& mkdir -p $JAVA_HOME \
+&& tar xvf openjdk-7u75-b13-linux-x64-18_dec_2014.tar.gz \
+&& mv java-se-7u75-ri/* $JAVA_HOME \
+&& ln -s $JAVA_HOME/bin/java /usr/bin/java \
+&& rmdir java-se-7u75-ri
+
 COPY script/entrypoint.sh /entrypoint.sh
 COPY config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
 
