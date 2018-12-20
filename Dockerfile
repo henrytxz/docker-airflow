@@ -85,13 +85,25 @@ RUN set -ex \
         /tmp/* \
         /var/tmp/*
 
+# Java, Hadoop and Hive
 RUN apt-get install wget \
 && wget https://download.java.net/openjdk/jdk7u75/ri/openjdk-7u75-b13-linux-x64-18_dec_2014.tar.gz \
 && mkdir -p $JAVA_HOME \
 && tar xvf openjdk-7u75-b13-linux-x64-18_dec_2014.tar.gz \
+&& rm openjdk-7u75-b13-linux-x64-18_dec_2014.tar.gz \
 && mv java-se-7u75-ri/* $JAVA_HOME \
 && ln -s $JAVA_HOME/bin/java /usr/bin/java \
-&& rmdir java-se-7u75-ri
+&& rmdir java-se-7u75-ri \
+&& wget https://archive.apache.org/dist/hadoop/core/hadoop-2.6.0/hadoop-2.6.0.tar.gz \
+&& tar -xzf hadoop-2.6.0.tar.gz --directory $HADOOP_HOME \
+&& rm hadoop-2.6.0.tar.gz \
+&& mv $HADOOP_HOME/hadoop-2.6.0/* $HADOOP_HOME \
+&& rmdir $HADOOP_HOME/hadoop-2.6.0 \
+&& wget https://archive.cloudera.com/cdh5/cdh/5/hive-1.1.0-cdh5.11.0.tar.gz \
+&& tar -xzf hive-1.1.0-cdh5.11.0.tar.gz --directory ${HIVE_DIR} \
+&& rm hive-1.1.0-cdh5.11.0.tar.gz \
+&& mv ${HIVE_DIR}/hive-1.1.0-cdh5.11.0/*  ${HIVE_DIR} \
+&& rmdir ${HIVE_DIR}/hive-1.1.0-cdh5.11.0
 
 COPY script/entrypoint.sh /entrypoint.sh
 COPY config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
