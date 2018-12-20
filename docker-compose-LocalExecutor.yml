@@ -1,7 +1,8 @@
-version: '2.1'
+version: '2'
 services:
     postgres:
         image: postgres:9.6
+        container_name: postgres-docker
         environment:
             - POSTGRES_USER=airflow
             - POSTGRES_PASSWORD=airflow
@@ -9,22 +10,19 @@ services:
 
     webserver:
         image: henrytxz/docker-airflow:c2
+        container_name: flow
         restart: always
         depends_on:
             - postgres
         environment:
             - LOAD_EX=n
+            - FERNET_KEY=H1Tj_wpvUMn9jP5TSUQUNHBu3PxVY7evddEP2XDw_dw=
             - EXECUTOR=Local
             - INSTALL_HIVE=y
             - PYTHONPATH=".:/usr/local/airflow:/usr/local/lib/python3.6/site-packages"
         volumes:
-            - ./dag:/usr/local/airflow/dags
-            - ./aggr:/usr/local/airflow/aggr
+            - ../aggr3/dag:/usr/local/airflow/dags
+            - ../aggr3/aggr:/usr/local/airflow/aggr
         ports:
             - "8080:8080"
         command: webserver
-        healthcheck:
-            test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
-            interval: 30s
-            timeout: 30s
-            retries: 3
