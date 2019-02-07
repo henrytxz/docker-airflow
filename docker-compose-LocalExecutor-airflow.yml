@@ -1,0 +1,20 @@
+version: '2'
+services:
+    webserver:
+        image: henrytxz/docker-airflow:c2
+        container_name: flow
+        restart: always
+        depends_on:
+            - postgres
+        environment:
+            - LOAD_EX=n
+            - FERNET_KEY=H1Tj_wpvUMn9jP5TSUQUNHBu3PxVY7evddEP2XDw_dw=
+            - EXECUTOR=Local
+            - INSTALL_HIVE=y
+            - PYTHONPATH=".:/usr/local/airflow:/usr/local/lib/python3.6/site-packages"
+        volumes:
+            - ../aggr3/dag:/usr/local/airflow/dags
+            - ../aggr3/aggr:/usr/local/airflow/aggr
+        ports:
+            - "8080:8080"
+        command: webserver
